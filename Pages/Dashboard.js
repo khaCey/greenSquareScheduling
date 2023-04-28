@@ -1,82 +1,72 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import { motion } from 'framer-motion';
+import ClockInOut from './ClockInOut';
 
-const DashboardContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
-`;
+const Dashboard = () => {
+  const [hours, setHours] = useState({
+    march: 200,
+    april: 150,
+  });
 
-const Greeting = styled.h1`
-  font-size: 3rem;
-  color: #333;
-  margin-bottom: 2rem;
-`;
-
-const YearSelector = styled.select`
-  font-size: 1.2rem;
-  margin-bottom: 2rem;
-`;
-
-const MonthTable = styled.table`
-  border-collapse: collapse;
-  text-align: center;
-  margin-top: 2rem;
-`;
-
-const MonthTableHeader = styled.th`
-  padding: 0.5rem;
-  background-color: #C7E9B0;
-  color: #333;
-`;
-
-const MonthTableCell = styled.td`
-  padding: 0.5rem;
-  background-color: #DDFFBB;
-  color: #333;
-`;
-
-const Dashboard = ({ employeeNumber }) => {
-  const [year, setYear] = useState(new Date().getFullYear());
-
-  const handleYearChange = (event) => {
-    setYear(parseInt(event.target.value));
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: { opacity: 1, transition: { duration: 0.5 } },
   };
 
-  // For demonstration purposes, the hours worked for each month are randomly generated
-  const hoursWorked = {};
-  for (let i = 0; i < 12; i++) {
-    hoursWorked[i] = Math.floor(Math.random() * 100);
-  }
+  const itemVariants = {
+    hidden: { opacity: 0, y: -50 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
+  };
 
   return (
-    <DashboardContainer>
-      <Greeting>Hello, employee {employeeNumber}!</Greeting>
-      <YearSelector value={year} onChange={handleYearChange}>
-        <option value={2023}>2023</option>
-        <option value={2022}>2022</option>
-        <option value={2021}>2021</option>
-      </YearSelector>
-      <MonthTable>
-        <thead>
-          <tr>
-            <MonthTableHeader>Month</MonthTableHeader>
-            <MonthTableHeader>Hours Worked</MonthTableHeader>
-          </tr>
-        </thead>
-        <tbody>
-          {[...Array(12).keys()].map((monthIndex) => (
-            <tr key={monthIndex}>
-              <MonthTableCell>{new Date(year, monthIndex).toLocaleString('default', { month: 'long' })}</MonthTableCell>
-              <MonthTableCell>{hoursWorked[monthIndex]}</MonthTableCell>
-            </tr>
-          ))}
-        </tbody>
-      </MonthTable>
-    </DashboardContainer>
+    <Container variants={containerVariants} initial="hidden" animate="visible">
+      <Header variants={itemVariants}>Dashboard</Header>
+      <Content>
+        <Row variants={itemVariants}>
+          <Title>March</Title>
+          <Hours>{hours.march}</Hours>
+        </Row>
+        <Row variants={itemVariants}>
+          <Title>April</Title>
+          <Hours>{hours.april}</Hours>
+        </Row>
+      </Content>
+      <ClockInOut />
+    </Container>
   );
 };
+
+const Container = styled(motion.div)`
+  max-width: 800px;
+  margin: 0 auto;
+`;
+
+const Header = styled(motion.h1)`
+  font-size: 32px;
+  margin-bottom: 20px;
+`;
+
+const Content = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const Row = styled(motion.div)`
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  margin-bottom: 10px;
+  background-color: #f5f5f5;
+  border-radius: 5px;
+`;
+
+const Title = styled.span`
+  font-size: 20px;
+`;
+
+const Hours = styled.span`
+  font-size: 20px;
+`;
 
 export default Dashboard;

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 
-const LoginContainer = styled.div`
+const LoginWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -9,74 +9,90 @@ const LoginContainer = styled.div`
   height: 100vh;
 `;
 
-const LogoPlaceholder = styled.div`
-  width: 100%;
-  height: 5rem;
-  background-color: #b3c99c;
-`;
-
-const LoginForm = styled.form`
+const Form = styled.form`
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1rem;
-  background-color: #c7e9b0;
-  padding: 2rem;
-  border-radius: 8px;
 `;
 
-const LoginInput = styled.input`
-  padding: 0.5rem;
-  font-size: 1rem;
+const Input = styled.input`
+  padding: 10px;
+  margin: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  width: 300px;
+`;
+
+const Button = styled.button`
+  background-color: #4CAF50;
   border: none;
-  border-radius: 4px;
-  box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
-  outline: none;
-`;
-
-const LoginButton = styled.button`
-  background-color: #a4bc92;
   color: white;
-  padding: 0.5rem 1rem;
-  border: none;
-  border-radius: 4px;
-  font-size: 1rem;
+  padding: 16px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 10px;
   cursor: pointer;
+`;
+
+const ToggleWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  margin: 10px;
+`;
+
+const ToggleLabel = styled.span`
+  margin-right: 10px;
+`;
+
+const ToggleInput = styled.input`
+  margin-right: 10px;
 `;
 
 const Login = ({ isAuthenticated, loginHandler, debugMode }) => {
   const [employeeNumber, setEmployeeNumber] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
+  const handleEmployeeNumberChange = (e) => {
+    setEmployeeNumber(e.target.value);
+  };
 
-    if (debugMode) {
-      loginHandler('', '', true); // pass empty strings and debug mode flag
-    } else {
-      loginHandler(employeeNumber, password, false); // authenticate user normally
-    }
+  const handlePasswordChange = (e) => {
+    setPassword(e.target.value);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    loginHandler(employeeNumber, password, debugMode);
+  };
+
+  const handleToggleDebugMode = () => {
+    loginHandler(employeeNumber, password, !debugMode);
   };
 
   return (
-    <LoginContainer>
-      <LogoPlaceholder />
-      <LoginForm onSubmit={handleSubmit}>
-        <LoginInput
+    <LoginWrapper>
+      <Form onSubmit={handleSubmit}>
+        <Input
           type="text"
-          placeholder="Employee number"
+          placeholder="Employee Number"
           value={employeeNumber}
-          onChange={(event) => setEmployeeNumber(event.target.value)}
+          onChange={handleEmployeeNumberChange}
         />
-        <LoginInput
+        <Input
           type="password"
           placeholder="Password"
           value={password}
-          onChange={(event) => setPassword(event.target.value)}
+          onChange={handlePasswordChange}
         />
-        <LoginButton type="submit">Login</LoginButton>
-      </LoginForm>
-    </LoginContainer>
+        <Button type="submit">Login</Button>
+      </Form>
+      <ToggleWrapper>
+        <ToggleLabel>Debug Mode:</ToggleLabel>
+        <ToggleInput type="checkbox" checked={debugMode} onChange={handleToggleDebugMode} />
+      </ToggleWrapper>
+    </LoginWrapper>
   );
 };
 
