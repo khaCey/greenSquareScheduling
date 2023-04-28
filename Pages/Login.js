@@ -7,77 +7,77 @@ const LoginContainer = styled.div`
   align-items: center;
   justify-content: center;
   height: 100vh;
-  background-color: #00994D;
+`;
+
+const LogoPlaceholder = styled.div`
+  width: 100%;
+  height: 5rem;
+  background-color: #b3c99c;
 `;
 
 const LoginForm = styled.form`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  padding: 20px;
-  border-radius: 5px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-  background-color: #ffffff;
+  gap: 1rem;
+  background-color: #c7e9b0;
+  padding: 2rem;
+  border-radius: 8px;
 `;
 
-const FormInput = styled.input`
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 20px;
+const LoginInput = styled.input`
+  padding: 0.5rem;
+  font-size: 1rem;
   border: none;
-  border-radius: 5px;
-  font-size: 16px;
-  background-color: #f5f5f5;
-  &:focus {
-    outline: none;
-  }
+  border-radius: 4px;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
+  outline: none;
 `;
 
-const FormButton = styled.button`
-  width: 100%;
-  padding: 10px;
+const LoginButton = styled.button`
+  background-color: #a4bc92;
+  color: white;
+  padding: 0.5rem 1rem;
   border: none;
-  border-radius: 5px;
-  font-size: 16px;
-  font-weight: bold;
-  color: #ffffff;
-  background-color: #00994D;
+  border-radius: 4px;
+  font-size: 1rem;
   cursor: pointer;
 `;
 
-function LoginPage() {
+const Login = ({ isAuthenticated, loginHandler, debugMode }) => {
   const [employeeNumber, setEmployeeNumber] = useState('');
   const [password, setPassword] = useState('');
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log('Employee Number:', employeeNumber);
-    console.log('Password:', password);
+
+    if (debugMode) {
+      loginHandler('', '', true); // pass empty strings and debug mode flag
+    } else {
+      loginHandler(employeeNumber, password, false); // authenticate user normally
+    }
   };
 
   return (
     <LoginContainer>
+      <LogoPlaceholder />
       <LoginForm onSubmit={handleSubmit}>
-        <h2 style={{ color: '#00994D' }}>Login</h2>
-        <FormInput
+        <LoginInput
           type="text"
-          placeholder="Employee Number"
+          placeholder="Employee number"
           value={employeeNumber}
           onChange={(event) => setEmployeeNumber(event.target.value)}
-          required
         />
-        <FormInput
+        <LoginInput
           type="password"
           placeholder="Password"
           value={password}
           onChange={(event) => setPassword(event.target.value)}
-          required
         />
-        <FormButton type="submit">Login</FormButton>
+        <LoginButton type="submit">Login</LoginButton>
       </LoginForm>
     </LoginContainer>
   );
-}
+};
 
-export default LoginPage;
+export default Login;
