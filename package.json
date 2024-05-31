@@ -3,8 +3,13 @@
   "version": "0.0.0",
   "private": true,
   "dependencies": {
+    "@mantine/core": "^7.10.1",
+    "@mantine/dates": "^7.10.1",
+    "@mantine/hooks": "^7.10.1",
     "@types/react": "^18.0.8",
     "@types/react-dom": "^18.0.2",
+    "axios": "^1.7.2",
+    "dayjs": "^1.11.11",
     "framer-motion": "^7.6.12",
     "react": "^18.1.0",
     "react-dom": "^18.1.0",
@@ -21,5 +26,17 @@
   },
   "devDependencies": {
     "react-scripts": "latest"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   }
 }
