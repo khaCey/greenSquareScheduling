@@ -27,4 +27,9 @@
   .mantine-DatePicker-day[data-outside] {
     color: rgba(0, 0, 0, 0.5); /* Less saturated color for outside dates */
   }
-  
+
+.boldText {
+  font-weight: bold;
+  font-size: 20px
+}
+
