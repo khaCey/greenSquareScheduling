@@ -48,7 +48,7 @@ const generateTimeslots = (selectedDate, appointmentHours) => {
   const minAllowedTime = now.add(minHourInterval, 'hour');
 
   for (let hour = startHour; hour < endHour; hour++) {
-    const appointmentCount = appointmentHours.filter(h => h === hour).length;
+    const appointmentCount = appointmentHours.filter(h => h.hour === hour && (h.status === 'reserved' || h.status === 'scheduled')).length;
     const timeslotTime = selectedDay.hour(hour).minute(0).second(0); // Exact timeslot time
     
     // Disable timeslots for today if the interval is within the same day or more than 24 hours
@@ -132,7 +132,10 @@ const App = () => {
           });
           const hours = response.data
             .filter(app => dayjs(app.startDate).tz(dayjs.tz.guess()).format('YYYY-MM-DD') === dayjs(selectedDate).format('YYYY-MM-DD'))
-            .map(app => dayjs(app.startDate).tz(dayjs.tz.guess()).hour());
+            .map(app => ({
+              hour: dayjs(app.startDate).tz(dayjs.tz.guess()).hour(),
+              status: app.status
+            }));
           setAppointmentHours(hours);
           setAppointments(response.data);
         } catch (error) {
