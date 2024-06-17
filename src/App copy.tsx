@@ -8,6 +8,7 @@ import classes from './Demo.module.css';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone';
+import AppointmentForm from './components/AppointmentForm';
 import TimeslotPicker from './components/TimeslotPicker';
 import { CSSTransition } from 'react-transition-group';
 import styled from 'styled-components';
@@ -114,6 +115,11 @@ const App = () => {
   const [appointments, setAppointments] = useState([]);
   const [appointmentHours, setAppointmentHours] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [showDatePicker, setShowDatePicker] = useState(false);
+  const [formSubmitted, setFormSubmitted] = useState(false);
   const [timePickerLoading, setTimePickerLoading] = useState(false);
 
   useEffect(() => {
@@ -144,6 +150,16 @@ const App = () => {
 
   const timeslots = selectedDate && !timePickerLoading ? generateTimeslots(dayjs(selectedDate), appointmentHours) : [];
 
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    setFormSubmitted(true);
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+      setShowDatePicker(true);
+    }, 1500); // Simulate loading time
+  };
+
   const handleBookAppointment = async () => {
     if (!selectedDate || !selectedTime) {
       alert("Please select a date and time.");
@@ -168,37 +184,59 @@ const App = () => {
       <Background>
         <Container>
           {loading && <Loader />}
-          <Title order={2}>Select a Date & Time</Title>
-          <StyledDatePickerContainer>
-            <DatePicker
-              allowDeselect
-              value={selectedDate}
-              onChange={setSelectedDate}
-              fullWidth
-              size="lg"
-              hideOutsideDates
-              minDate={dayjs().add(1, 'day').toDate()} // Disable dates before tomorrow
-              classNames={{ day: classes.boldText }}
+          <CSSTransition
+            in={!formSubmitted}
+            timeout={300}
+            classNames="fade"
+            unmountOnExit
+          >
+            <AppointmentForm
+              name={name}
+              setName={setName}
+              email={email}
+              setEmail={setEmail}
+              phoneNumber={phoneNumber}
+              setPhoneNumber={setPhoneNumber}
+              handleSubmit={handleSubmit}
+              selectedDate={selectedDate}
+              selectedTime={selectedTime}
             />
-          </StyledDatePickerContainer>
-          {selectedDate && (
+          </CSSTransition>
+          {showDatePicker && (
             <>
-              <Title order={3}>{dayjs(selectedDate).format('dddd, MMMM D')}</Title>
-              <TimePickerWrapper>
-                {timePickerLoading && (
-                  <SpinnerOverlay>
-                    <Loader />
-                  </SpinnerOverlay>
-                )}
-                <TimeslotPicker
-                  timeslots={timeslots}
-                  selectedTime={selectedTime}
-                  setSelectedTime={setSelectedTime}
+              <Title order={2}>Select a Date & Time</Title>
+              <StyledDatePickerContainer>
+                <DatePicker
+                  allowDeselect
+                  value={selectedDate}
+                  onChange={setSelectedDate}
+                  fullWidth
+                  size="lg"
+                  hideOutsideDates
+                  minDate={dayjs().add(1, 'day').toDate()} // Disable dates before tomorrow
+                  classNames={{ day: classes.boldText }}
                 />
-              </TimePickerWrapper>
+              </StyledDatePickerContainer>
+              {selectedDate && (
+                <>
+                  <Title order={3}>{dayjs(selectedDate).format('dddd, MMMM D')}</Title>
+                  <TimePickerWrapper>
+                    {timePickerLoading && (
+                      <SpinnerOverlay>
+                        <Loader />
+                      </SpinnerOverlay>
+                    )}
+                    <TimeslotPicker
+                      timeslots={timeslots}
+                      selectedTime={selectedTime}
+                      setSelectedTime={setSelectedTime}
+                    />
+                  </TimePickerWrapper>
+                </>
+              )}
+              <Button onClick={handleBookAppointment} style={{ marginTop: '10px' }}>Book Appointment</Button>
             </>
           )}
-          <Button onClick={handleBookAppointment} style={{ marginTop: '10px' }}>Book Appointment</Button>
         </Container>
       </Background>
     </MantineProvider>
