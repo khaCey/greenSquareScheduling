@@ -1,35 +1,34 @@
 /* Demo.module.css */
 
 .mantine-DatePicker-day {
-    width: 50px;
-    height: 50px;
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: transparent;
-    border: none;
-    transition: background-color 0.2s ease;
-  }
-  
-  .mantine-DatePicker-day:hover {
-    background-color: #add8e6;
-  }
-  
-  .mantine-DatePicker-day[data-selected] {
-    background-color: #D3D3D3;
-  }
-  
-  .mantine-DatePicker-day[data-weekend] {
-    color: red;
-  }
-  
-  .mantine-DatePicker-day[data-outside] {
-    color: rgba(0, 0, 0, 0.5); /* Less saturated color for outside dates */
-  }
+  width: 50px; /* Adjust size as needed */
+  height: 50px; /* Adjust size as needed */
+  border-radius: 50%; /* Change to 50% for a perfect circle */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
+  border: none;
+  transition: background-color 0.2s ease;
+}
+
+.mantine-DatePicker-day:hover {
+  background-color: #add8e6; /* Light blue on hover */
+}
+
+.mantine-DatePicker-day[data-selected] {
+  background-color: #D3D3D3; /* Light grey when selected */
+}
+
+.mantine-DatePicker-day[data-weekend] {
+  color: red; /* Red for weekend dates */
+}
+
+.mantine-DatePicker-day[data-outside] {
+  color: rgba(0, 0, 0, 0.5); /* Less saturated color for outside dates */
+}
 
 .boldText {
   font-weight: bold;
-  font-size: 20px
+  font-size: 20px;
 }
-

@@ -1,9 +1,9 @@
 # Use the official Node.js image.
 # https://hub.docker.com/_/node
-FROM node:14
+FROM node:16
 
 # Create and change to the app directory.
-WORKDIR /khacey/GitHub/greenSquareScheduling
+WORKDIR /usr/src/app
 
 # Copy application dependency manifests to the container image.
 COPY package.json yarn.lock ./
@@ -21,4 +21,4 @@ ENV NODE_ENV=production
 EXPOSE 3000
 
 # Run the web service on container startup.
-CMD ["yarn", "start"]
+CMD [ "yarn", "start" ]
